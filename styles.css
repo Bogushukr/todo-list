@@ -128,7 +128,7 @@ h1,h2 {
 .buttons button {
   outline: none;
   border: none;
-  background-color: red;
+  background-color: inherit;
   color: #fff;
   cursor: pointer;
   height: 25px;
@@ -140,8 +140,13 @@ h1,h2 {
   transition: all .1s linear;
 }
 
+.icon {
+  width: 15px;
+  height: 15px;
+}
+
 .buttons button:active {
-  box-shadow: 0 2px 0 #006599;
+  box-shadow: 0 3px 0 #770f0f;
   transform: translateY(3px);
 }
 
