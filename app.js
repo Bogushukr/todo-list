@@ -36,16 +36,16 @@ const createTemplate = (task, index) => {
     `
 }
 
-// const filterItem = () => {
-//     const activeItem = tasks.length && tasks.filter(item => item.completed == false);
-//     const completedItem = tasks.length && tasks.filter(item => item.completed == true);
-//     tasks = [...activeItem, ...completedItem];
+const filterItem = () => {
+    const activeItem = tasks.length && tasks.filter(item => item.completed == false);
+    const completedItem = tasks.length && tasks.filter(item => item.completed == true);
+    tasks = [...activeItem, ...completedItem];
 
-// }
+}
 
 const createTasksList = () => {
     todosWrapper.innerHTML = "";
-    // filterItem();
+    filterItem();
     apiGetTasks();
     if (tasks.length > 0) {
         tasks.forEach((item, index) => {
@@ -89,72 +89,4 @@ addTaskBtn.addEventListener('click', () => {
 })
 
 
-
-
-
-
-// class ApiService {
-//   constructor() {
-//     this.searchQuery = '';
-//     this.page = 1;
-//   }
-
-//   async fetchImages() {
-//     const url = BASE_URL;
-//       const response = await fetch(url);
-
-//     if (!response.ok) {
-//       throw new Error(`HTTP error! status: ${response.status}`);
-    
-//     }
-//     const result = await response.json();
-//     console.log(result);
-//     this.incrementPage();
-//     return await Promise.resolve(result.hits);
-//   }
-
-//   resetPage() {
-//     this.page = 1;
-//   }
-
-//   get query() {
-//     return this.searchQuery;
-//   }
-
-//   set query(newQuery) {
-//     this.searchQuery = newQuery;
-//   }
-// }
-
-// const apiImg = new ApiService();
-
-// function onSearch(e) {
-//   e.preventDefault();
-//   clearGallery();
-//   const inputQuery = e.currentTarget.elements.query.value;
-//   apiImg.query = inputQuery.trim();
-
-//   loadBtn.show();
-//   apiImg.resetPage();
-//   clearGallery();
-//   fetchImgs();
-//   e.currentTarget.reset();
-
-//   scrollImg(e);
-// }
-
-// async function fetchImgs() {
-//   try {
-//     const img = await apiImg.fetchImages();
-//     loadBtn.disable();
-//     preloader.show();
-//     renderImgs(img);
-//   } catch (error) {
-//     console.log(error);
-//     onError();
-//   }
-
-//   loadBtn.enable();
-//   preloader.hide();
-// }
 
