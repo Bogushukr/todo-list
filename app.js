@@ -30,7 +30,7 @@ const createTemplate = (task, index) => {
             <div class="description">${task.title}</div>
             <div class="buttons">
                 <input onclick="completeItem(${index})" type="checkbox" class="btn-complete" ${task.completed ? 'checked' : ''}>
-                <button onclick="deleteItem(${index})" class="btn-delete"><img class="icon" src="/bin.png" alt="Delete"></button>
+                <button onclick="deleteItem(${index})" class="btn-delete"><img class="icon" src="./bin.png" alt="Delete"></button>
             </div>
         </div>
     `
