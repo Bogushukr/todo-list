@@ -4,6 +4,15 @@ const todosWrapper = document.querySelector('.todos-wrapper');
 
 const BASE_URL = 'https://jsonplaceholder.typicode.com/todos?userId=1';
 
+const apiGetTasks = () => {
+    fetch(BASE_URL)
+    .then(res => res.json())
+    .then(data => 
+    localStorage.setItem('tasks', JSON.stringify(data)))
+}
+
+apiGetTasks();
+
 let tasks;
 !localStorage.tasks ? tasks = [] : tasks = JSON.parse(localStorage.getItem('tasks'));
 
@@ -14,13 +23,6 @@ function Task(description) {
     this.id = "";
     this.title = description;
     this.completed = false;
-}
-
-const apiGetTasks = () => {
-    fetch(BASE_URL)
-    .then(res => res.json())
-    .then(data => 
-    localStorage.setItem('tasks', JSON.stringify(data)))
 }
 
 
@@ -46,13 +48,13 @@ const filterItem = () => {
 const createTasksList = () => {
     todosWrapper.innerHTML = "";
     filterItem();
-    apiGetTasks();
     if (tasks.length > 0) {
         tasks.forEach((item, index) => {
             todosWrapper.innerHTML += createTemplate(item, index);
         });
         todoItems = document.querySelectorAll('.todo-item');
     }
+    
 }
 
 createTasksList();
@@ -70,14 +72,16 @@ const completeItem = index => {
     }
     updateLocal();
     createTasksList();
+    
 }
 
-const deleteItem = index => {
+const deleteItem = index => {   
     todoItems[index].classList.add('delition');
     setTimeout(() => {
         tasks.splice(index, 1);
         updateLocal();
         createTasksList();
+        
     }, 350)
 }
 
