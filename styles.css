@@ -28,7 +28,18 @@ h1,h2 {
   width: 100%;
 }
 
-.add-todo-wrapper {
+.todo-title {
+  display: flex;
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.add-todo-wrapper,
+.change-todo-title {
   display: flex;
   width: 500px;
   min-height: 40px;
@@ -40,6 +51,7 @@ h1,h2 {
   border-radius: 15px;
   padding: 10px;
 }
+
 
 .input-wrapper {
   width: 80%;
@@ -85,6 +97,37 @@ h1,h2 {
   transform: translateY(3px);
 }
 
+.back-wrapper {
+  margin-top: 20px;;
+  width: 20%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+
+.back-wrapper button {
+  width: 80%;
+  outline: none;
+  border: none;
+  height: 25px;
+  cursor: pointer;
+  border-radius: 10px;
+  font-weight:bold;
+  background: darkorange;
+  box-shadow: 0 4px 0 rgb(194, 118, 25);
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  margin: 0;
+  outline: 0;
+  transition: all .1s linear;
+}
+
+.back-wrapper button:active {
+  box-shadow: 0 2px 0 rgb(194, 118, 25);
+  transform: translateY(3px);
+}
+
 .todo-item {
   display: flex;
   width: 500px;
@@ -116,6 +159,7 @@ h1,h2 {
   display: flex;
   align-items: center;
   color: #fff;
+  cursor: pointer;
 }
 
 .buttons {

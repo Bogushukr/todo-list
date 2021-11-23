@@ -6,11 +6,12 @@ const USER_ID = 1;
 const BASE_URL = `https://jsonplaceholder.typicode.com/todos?userId=${USER_ID}`;
 
 
-let tasks;
 let todoItems = [];
-!localStorage.tasks ? tasks = [] : tasks = JSON.parse(localStorage.getItem('tasks'));
+function loadTaskState() {
+  return localStorage.tasks ? JSON.parse(localStorage.getItem('tasks')) : [];
+}
 
-
+let tasks = loadTaskState();
 class Todo {
   constructor(title) {
     this.userId = USER_ID;
@@ -42,7 +43,7 @@ const filterItem = () => {
 async function apiGetTasks() {
     if (tasks.length === 0) {
         try {
-            const response = await fetch(BASE_URL)
+            const response = await fetch(BASE_URL);
             const data = await response.json();
             return localStorage.setItem('tasks', JSON.stringify(data));
         } catch (error) {
@@ -51,20 +52,16 @@ async function apiGetTasks() {
     }
 }
 
-
-async function createTasksList() {
+const createTasksList = () => {
     todosWrapper.innerHTML = "";
     filterItem();
     if (tasks.length > 0) {
-        await tasks.forEach((item, index) => {
+        tasks.forEach((item, index) => {
             todosWrapper.innerHTML += createTemplate(item, index);       
         });
         return todoItems = document.querySelectorAll('.todo-item');
     }  
 }
-
-apiGetTasks();
-createTasksList();
 
 const updateLocal = () => {
     localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -90,13 +87,27 @@ const deleteItem = index => {
     }, 350)
 }
 
+// async function getUsers() {
+//   try {
+//     let response = await fetch('http://example.com/api/users');
+//     let users = await response.json();
+//     return users;
+//   } catch(error) {
+//     alert(error);
+//   }
+// }
+
+// getUsers();
+
 addTaskBtn.addEventListener('click', () => {
     tasks.push(new Todo(deskTaskInput.value));
     updateLocal();
     createTasksList();
     deskTaskInput.value = '';
-})
+});
 
-// todoTitle.addEventListener('click', () => {
-//     console.log(todoItem.value);
-// })
+(async () => {
+    await apiGetTasks();
+    tasks = loadTaskState();
+    createTasksList();
+})();
