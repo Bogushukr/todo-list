@@ -2,34 +2,28 @@ const addTaskBtn = document.getElementById('add-task-btn');
 const deskTaskInput = document.getElementById('description-task');
 const todosWrapper = document.querySelector('.todos-wrapper');
 
-const BASE_URL = 'https://jsonplaceholder.typicode.com/todos?userId=1';
+const USER_ID = 1;
+const BASE_URL = `https://jsonplaceholder.typicode.com/todos?userId=${USER_ID}`;
 
-const apiGetTasks = () => {
-    fetch(BASE_URL)
-    .then(res => res.json())
-    .then(data => 
-    localStorage.setItem('tasks', JSON.stringify(data)))
-}
-
-apiGetTasks();
 
 let tasks;
+let todoItems = [];
 !localStorage.tasks ? tasks = [] : tasks = JSON.parse(localStorage.getItem('tasks'));
 
-let todoItems = [];
 
-function Task(description) {
-    this.userId = "";
-    this.id = "";
-    this.title = description;
+class Todo {
+  constructor(title) {
+    this.userId = USER_ID;
+    this.id = Date.now();
+    this.title = title;
     this.completed = false;
+  }
 }
-
-
+    
 const createTemplate = (task, index) => {
     return `
         <div class="todo-item ${task.completed ? 'checked' : ''}">
-            <div class="description">${task.title}</div>
+            <div onclick="window.location.href = '/todo-item.html'" class="title">${task.title}</div>
             <div class="buttons">
                 <input onclick="completeItem(${index})" type="checkbox" class="btn-complete" ${task.completed ? 'checked' : ''}>
                 <button onclick="deleteItem(${index})" class="btn-delete"><img class="icon" src="./bin.png" alt="Delete"></button>
@@ -41,22 +35,35 @@ const createTemplate = (task, index) => {
 const filterItem = () => {
     const activeItem = tasks.length && tasks.filter(item => item.completed == false);
     const completedItem = tasks.length && tasks.filter(item => item.completed == true);
-    tasks = [...activeItem, ...completedItem];
-
+    tasks = [...activeItem, ...completedItem,];
 }
 
-const createTasksList = () => {
+
+async function apiGetTasks() {
+    if (tasks.length === 0) {
+        try {
+            const response = await fetch(BASE_URL)
+            const data = await response.json();
+            return localStorage.setItem('tasks', JSON.stringify(data));
+        } catch (error) {
+            console.log('error', error);
+        }
+    }
+}
+
+
+async function createTasksList() {
     todosWrapper.innerHTML = "";
     filterItem();
     if (tasks.length > 0) {
-        tasks.forEach((item, index) => {
-            todosWrapper.innerHTML += createTemplate(item, index);
+        await tasks.forEach((item, index) => {
+            todosWrapper.innerHTML += createTemplate(item, index);       
         });
-        todoItems = document.querySelectorAll('.todo-item');
-    }
-    
+        return todoItems = document.querySelectorAll('.todo-item');
+    }  
 }
 
+apiGetTasks();
 createTasksList();
 
 const updateLocal = () => {
@@ -71,26 +78,25 @@ const completeItem = index => {
         todoItems[index].classList.remove('checked');
     }
     updateLocal();
-    createTasksList();
-    
+    createTasksList();  
 }
 
 const deleteItem = index => {   
-    todoItems[index].classList.add('delition');
+    todoItems[index].classList.add('deletion');
     setTimeout(() => {
         tasks.splice(index, 1);
         updateLocal();
-        createTasksList();
-        
+        createTasksList();        
     }, 350)
 }
 
 addTaskBtn.addEventListener('click', () => {
-    tasks.push(new Task(deskTaskInput.value));
+    tasks.push(new Todo(deskTaskInput.value));
     updateLocal();
     createTasksList();
     deskTaskInput.value = '';
 })
 
-
-
+// todoTitle.addEventListener('click', () => {
+//     console.log(todoItem.value);
+// })

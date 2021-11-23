@@ -105,13 +105,13 @@ h1,h2 {
   transition: all 1s cubic-bezier(.36,-0.64,.34,1.76);
 }
 
-.todo-item.delition {
+.todo-item.deletion {
   opacity: 0;
   transform: rotateY(-90deg);
   transition: all 0.5s cubic-bezier(.36,-0.64,.34,1.76);
 }
 
-.description {
+.title {
   width: 80%;
   display: flex;
   align-items: center;
