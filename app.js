@@ -18,10 +18,12 @@ class Todo {
     this.id = Date.now();
     this.title = title;
     this.completed = false;
+    this.isNotApi = true;
   }
 }
     
 const createTemplate = (task, index) => {
+    
     return `
         <div class="todo-item ${task.completed ? 'checked' : ''}">
             <div onclick="window.location.href = './todo-item.html'" class="title">${task.title}</div>
@@ -44,8 +46,9 @@ async function apiGetTasks() {
     if (tasks.length === 0) {
         try {
             const response = await fetch(BASE_URL);
+            console.log('status: ',response.status);
             const data = await response.json();
-            return localStorage.setItem('tasks', JSON.stringify(data));
+            return localStorage.setItem('tasks', JSON.stringify(data));    
         } catch (error) {
             console.log('error', error);
         }
@@ -57,7 +60,8 @@ const createTasksList = () => {
     filterItem();
     if (tasks.length > 0) {
         tasks.forEach((item, index) => {
-            todosWrapper.innerHTML += createTemplate(item, index);       
+            todosWrapper.innerHTML += createTemplate(item, index);
+            
         });
         return todoItems = document.querySelectorAll('.todo-item');
     }  
@@ -78,26 +82,19 @@ const completeItem = index => {
     createTasksList();  
 }
 
-const deleteItem = index => {   
+async function deleteItem(index) {   
     todoItems[index].classList.add('deletion');
     setTimeout(() => {
-        tasks.splice(index, 1);
+        tasks.splice(index, 1).forEach((item) => {
+        if (!item.isNotApi === true) {
+           return console.log( item.id);          
+    }
+    });
         updateLocal();
-        createTasksList();        
-    }, 350)
+        createTasksList();       
+    }, 350) 
 }
 
-// async function getUsers() {
-//   try {
-//     let response = await fetch('http://example.com/api/users');
-//     let users = await response.json();
-//     return users;
-//   } catch(error) {
-//     alert(error);
-//   }
-// }
-
-// getUsers();
 
 addTaskBtn.addEventListener('click', () => {
     tasks.push(new Todo(deskTaskInput.value));
